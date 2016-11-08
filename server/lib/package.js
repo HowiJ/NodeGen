@@ -1,3 +1,4 @@
+//Module that is in charge of creating the package.json;
 module.exports = function(data) {
     //Creating a string for the contents of package.json
     var package_json = `{

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src="js/angular.min.js" charset="utf-8"></script>
+        <script src="./js/angular_master.js" charset="utf-8"></script>
+    </head>
+    <body ng-app="app">
+        <div ng-controller="GeneratorController">
+            <h1>Node Generator</h1>
+            <a>Dl</a>
+            <form ng-submit="makeFiles()">
+                <h4>Package.json</h4>
+                <input type="text" ng-model="data.package.name">
+                <input type="submit" value="send">
+            </form>
+        </div>
+    </body>
+</html>
