@@ -1,19 +1,14 @@
-class PackageJson {
-    var necessities = {name: false };
-    var notvalid = false;
-
-    constructor(data) {
-        this.fileStr = '{';
-        this.fileStr = this.fileStr + '"name": "'+data.name+'"';
-    }
-
-    createFile() {
-        this.fileStr = this.fileStr+'}';
-        return this.fileStr
-    }
-}
 module.exports = function(data) {
+    //Creating a string for the contents of package.json
+    var package_json = `{
+    "name" : "${data.name}",
+    "version" : "1.0.0",
+    "license" : "ISC"
+}`
 
+
+    //Returns a string with the package.json data.
+    return package_json;
 }
 /*
 

@@ -1,8 +1,8 @@
-var bodyParser  = require('body-parser'),
-    express     = require('express'),
-    moment      = require('moment'),
-    port        = require('./server/config/settings.js').port,
-    app         = express();
+const bodyParser  = require('body-parser');
+const express     = require('express');
+const moment      = require('moment');
+const port        = require('./server/config/settings.js').port;
+const app         = express();
 
 require('./server/config/routes.js')(app);
 
