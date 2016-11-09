@@ -22,11 +22,14 @@ app.controller('GeneratorController', ['$scope', 'GeneratorFactory', function($s
             // {field:'scripts', type:'Array'},
             {field:'author', type:'String'},
             {field:'license', type:'String'},
-            {field:'dependencies', type:'Array', init: [0]}
+            // {field:'dependencies', type:'Array', init: [0]}
         ],
         server: [
             {field: 'tester', type: 'Array', init: []},
             {field: 'port', type: 'Number'}
+        ],
+        database: [
+            {field: 'name', type: 'String'}
         ]
     }
     $scope.data = {package: {}};

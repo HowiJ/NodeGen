@@ -1,24 +1,38 @@
 module.exports = function(data) {
-    const server_str = `
-    //All of the constants we need to require;
-    const bodyParser  = require('body-parser');
-    const express     = require('express');
-    const moment      = require('moment');
-    const port        = ${data.port};
-    const path        = require('path');
-    const app         = express();
+    const server_str = `//////////////////////////////////////////////////////////
+//                      Requires                        //
+//////////////////////////////////////////////////////////
+const bodyParser  = require('body-parser');
+const express     = require('express');
+const moment      = require('moment');
+const port        = ${data.port};
+const path        = require('path');
+const app         = express();
 
-    app.use(bodyParser.urlencoded({extended:true}));
-    app.use(bodyParser.json());
+////////////////////////////////////////////////////////////
+//             App.use (Body Parser, Static)              //
+////////////////////////////////////////////////////////////
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "./client")));
 
-    app.use(express.static(path.join(__dirname, './client')));
+////////////////////////////////////////////////////////////
+//                        Mongoose                        //
+////////////////////////////////////////////////////////////
+require('./server/config/mongoose.js');
+////////////////////////////////////////////////////////////
+//                         Routes                         //
+////////////////////////////////////////////////////////////
+require('./server/config/routes.js')(app)
 
-
-    app.listen(port, function() {
-        console.log(moment().format('MMMM Do, YYYY : h:mm:ss a'));
-        console.log('Archiver on port:', port);
-    })`;
-
+////////////////////////////////////////////////////////////
+//                     Listen to Port                     //
+////////////////////////////////////////////////////////////
+app.listen(port, function() {
+    console.log(moment().format('MMMM Do, YYYY : h:mm:ss a'));
+    console.log("${data.name}! ("+port+")");
+})`;
+//Require port
+//require(path.join(__dirname,"./server/config/settings.js")).port;
     return server_str;
 }
 

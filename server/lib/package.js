@@ -8,50 +8,26 @@ module.exports = function(data) {
         if (!i.includes('dependencies')) {
             package_json = package_json + `\n\t"${i}" : "${data[i]}",`
         } else {
-            pkg_dep.push(data[i]);
+            //For custom Dependencies, which we won't do atm.
+            // pkg_dep.push(data[i]);
         }
     }
     //add dependencies
     package_json = package_json + `\n\t"dependencies" : {`;
+    package_json = package_json + `\n\t\t"express" : "^4.14.0",`;
+    package_json = package_json + `\n\t\t"body-parser" : "^1.15.2",`;
+    package_json = package_json + `\n\t\t"moment" : "^2.15.2",`;
+    package_json = package_json + `\n\t\t"mongoose" : "^4.6.6"`;
 
-    package_json = package_json + `\n\t\t"express" : "^4.14.0"`;
+    //For custom Dependencies
+    // if (pkg_dep.length > 0) { package_json += "," };
+    // for (var i = 0; i < pkg_dep.length; i++) {
+    //     package_json = package_json + `\n\t\t"${pkg_dep[i]}" : "^1.0.0"`;
+    //     if (i < pkg_dep.length-1) { package_json += "," };
+    // }
 
-
-    if (pkg_dep.length > 0) { package_json += "," };
-
-    for (var i = 0; i < pkg_dep.length; i++) {
-        package_json = package_json + `\n\t\t"${pkg_dep[i]}" : "^1.0.0"`;
-        if (i < pkg_dep.length-1) { package_json += "," };
-    }
-
-    package_json = package_json + '\n\t}';
-
-    package_json = package_json +   `\n}`;
-
+    package_json = package_json + '\n\t}\n}';
 
     //Returns a string with the package.json data.
     return package_json;
 }
-/*
-
-{
-  "name": "07112016_test",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "keywords": [],
-  "author": "Howard Jiang <me@howardjiang.com> (http://howardjiang.com)",
-  "license": "ISC",
-  "dependencies": {
-    "archiver": "^1.2.0",
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "moment": "^2.15.2"
-  }
-}
-
-*/

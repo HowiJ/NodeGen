@@ -32,15 +32,18 @@ module.exports = (function() {
                 }
                 details[current[0]][current[1]] = data[i];
             }
-            // console.log(details);
+            details.server.name = details.package.name;
+            details.config = {settings: {port: details.server.port, db: details.database.name}}
 
             //Each File as a string.
             const packageJson = require('../lib/package.js')(details.package);
             const serverJs    = require('../lib/server.js')(details.server);
+            const settingsJs  = require('../lib/config/settings.js')(details.config.settings);
 
             details.output = {
                 packageJson : JSON.parse(packageJson),
-                serverJs    : serverJs
+                serverJs    : serverJs,
+                settings    : settingsJs
             }
 
             if (debug) {
@@ -55,6 +58,7 @@ module.exports = (function() {
                 //Append to zip a bunch of things before finalizing it to be sent;
                 zip .append(packageJson, { name: structure.package })
                     .append(serverJs, { name: structure.server })
+                        .append(settingsJs, { name: structor.settings })
                 .finalize();
             }
         },
