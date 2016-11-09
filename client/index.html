@@ -3,18 +3,36 @@
     <head>
         <meta charset="utf-8">
         <title></title>
+        <style>
+        span {
+            cursor: pointer;
+        }
+        </style>
         <script src="js/angular.min.js" charset="utf-8"></script>
         <script src="./js/angular_master.js" charset="utf-8"></script>
     </head>
     <body ng-app="app">
         <div ng-controller="GeneratorController">
             <h1>Node Generator</h1>
-            <a>Dl</a>
-            <form ng-submit="makeFiles()">
-                <h4>Package.json</h4>
-                <input type="text" ng-model="data.package.name">
-                <input type="submit" value="send">
+            <form action="/node_server" method="post">
+                <div ng-repeat="(key, value) in details">
+                    <h4 ng-bind="key"></h4>
+                    <div ng-repeat="obj in value track by $index">
+                        <label for="{{obj.field}}" ng-bind="obj.field"></label>
+                        <span ng-if="obj.type=='Array'" ng-click="addField(key+'_'+obj.field)">+</span>
+                        <br ng-if="obj.type=='Array'">
+                        <input ng-if="obj.type=='Array'" type="text" name="{{key+'_'+obj.field+'#'+$index}}" ng-repeat="inp in obj.init track by $index" value="{{'dep_'+$index}}">
+                        <input ng-if="obj.type!='Array'" type="text" name="{{key+'_'+obj.field}}" value="{{obj.field+'_'+$index}}">
+                    </div>
+                </div>
+                <!-- <h4>Package.Json</h4>
+                <label for="package_name">name</label>
+                <input type="text" name="package_name"> -->
+
+                <h4>Go</h4>
+                <input type="submit" value="Download">
             </form>
         </div>
+
     </body>
 </html>

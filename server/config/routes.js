@@ -3,7 +3,7 @@ const viewer  = require('../controllers/viewer.js');
 
 module.exports = function(app) {
     //Route to send the zip file
-    app.post('/server', function(req, res) {
+    app.post('/node_server', function(req, res) {
         creator.server(req, res);
     })
     app.get('/test', function(req, res) {
@@ -13,6 +13,6 @@ module.exports = function(app) {
 
     //All other routes go to the view page so angular can handle the routing.
     app.get('/*', function(req, res) {
-        viewer.index(req, res);
+        res.redirect('/');
     })
 }

@@ -1,11 +1,13 @@
 //Archiver for files
 const archiver    = require('archiver');
+const http        = require('http');
+
+//debug mode
+const debug       = true;
 //Archiver for the zip file
-const zip         = archiver('zip');
 
 //Structure of modularization
 const structure   = require('../lib/structure.js');
-
 module.exports = (function() {
     return {
         index: function(req, res) {
@@ -14,21 +16,51 @@ module.exports = (function() {
             res.end();
         },
         server: function(req, res) {
-            //Form data
+            const zip  = archiver('zip');
             const data = req.body;
+
+            var details = {};
+
             console.log(data);
 
+            //Takes the req.body and splits it up to sub groups
+            for (var i in data) {
+                //Split of the thing where 0 is the parent folder and 1 is the subclass
+                var current = i.split('_');
+                if (!details[current[0]]) {
+                    details[current[0]] = {};
+                }
+                details[current[0]][current[1]] = data[i];
+            }
+            // console.log(details);
+
             //Each File as a string.
-            const packageJson = require('../lib/package.js')(data.package.name);
+            const packageJson = require('../lib/package.js')(details.package);
+            const serverJs    = require('../lib/server.js')(details.server);
 
-            //Pipe the archiver('zip');
-            zip.pipe(res);
+            details.output = {
+                packageJson : JSON.parse(packageJson),
+                serverJs    : serverJs
+            }
 
-            //Append to zip a bunch of things before finalizing it to be sent;
-            // res.send(packageJson);
-            zip.append(packageJson, { name: structure.package}).finalize();
+            if (debug) {
+                res.send(details);
+            } else {
+                console.log('-----------------------------------\n');
+                console.log(packageJson);
+
+                // Pipe the archiver('zip');
+                zip.pipe(res);
+
+                //Append to zip a bunch of things before finalizing it to be sent;
+                zip .append(packageJson, { name: structure.package })
+                    .append(serverJs, { name: structure.server })
+                .finalize();
+            }
         },
         test: function(req, res) {
+            //Creates a new instance of archiver('zip');
+            const zip  = archiver('zip');
             //Testing route atm.
             console.log('test route');
 
