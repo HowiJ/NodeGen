@@ -4,7 +4,8 @@ const archiver    = require('archiver');
 const http        = require('http');
 
 //debug mode
-const debug       = true;
+const debug       = false;
+if (debug) { console.log('DEBUGGER IS ON') };
 //Archiver for the zip file
 
 //Structure of modularization
@@ -61,9 +62,11 @@ module.exports = (function() {
             const serverJs    = require('../lib/server.js')(details.server, database?true:false);
                 //Config Folder
                 const settingsJs  = require('../lib/config/settings.js')(details.config.settings);
-                const routesJs    = require('../lib/config/routes.js')(details.config.settings);
+                const routesJs    = require('../lib/config/routes.js')(details.config.settings, database?details.model:undefined);
                 const mongooseJs  = require('../lib/config/mongoose.js')();
-                const modelsObj   = require('../lib/models.js')(details.model);
+
+                const modelsObj         = require('../lib/models.js')(details.model);
+                const controllersObjM   = require('../lib/controllers.js')(details.model);
 
             details.output = {
                 packageJson : JSON.parse(packageJson),
@@ -73,8 +76,9 @@ module.exports = (function() {
             }
             if (database) {
                 console.log('USING DB');
-                details.output['mongooseJs'] = mongooseJs;
-                details.output['models']     = modelsObj;
+                details.output['mongooseJs' ]   = mongooseJs;
+                details.output['models'     ]   = modelsObj;
+                details.output['controllers']   = controllersObjM;
             }
 
             if (debug) {
@@ -97,6 +101,9 @@ module.exports = (function() {
 
                     for (let i in details.output.models) {
                         zip .append(details.output.models[i], { name: structure.models+i.toLowerCase()+'.js' });
+                    }
+                    for (let i in details.output.controllers) {
+                        zip .append(details.output.controllers[i], { name: structure.controllers+i.toLowerCase()+'.js' });
                     }
                 }
 

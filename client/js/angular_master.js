@@ -29,9 +29,7 @@ app.controller('GeneratorController', ['$scope', 'GeneratorFactory', function($s
         ],
         database: [
             { field: 'use',         type: 'Checkbox'    },
-            { field: 'name',        type: 'String'      },
-            { field: 'testin',      type: 'Array',      init: [0]   },
-            { field: 'hello ',      type: 'Array',      init: [0]   }
+            { field: 'name',        type: 'String'      }
         ],
         model: [
             { field: 'name',        type: 'Model',      init: [[0]]   }

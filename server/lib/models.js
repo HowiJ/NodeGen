@@ -10,16 +10,14 @@ module.exports = function(data) {
     function toModelStr (obj, key) {
         let returnStr =`const mongoose = require('mongoose');\nconst Schema = mongoose.Schema;\n\nconst ${key}Schema = new Schema({`;
         for (let i in obj) {
-            returnStr = returnStr + `\n\t${i}: {type: ${obj[i]}},`;
+            returnStr = returnStr + `\n\t${i}: {type: ${obj[i]}, required: true},`;
         };
         returnStr = returnStr.substr(0, returnStr.length-1);
         returnStr = returnStr + `\n})\n\nmongoose.model('${key}', ${key}Schema);`;
-
-        console.log(returnStr);
         return returnStr;
     }
 
-    //Parses through
+    //Parses through data to an object for each model
     for (let i in data) {
         if (i.split('@').length > 1) {
             models[data[i]] = {};
