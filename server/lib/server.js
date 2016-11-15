@@ -1,12 +1,12 @@
-module.exports = function(data) {
-    const server_str = `//////////////////////////////////////////////////////////
+module.exports = function(data, db) {
+    var server_str = `//////////////////////////////////////////////////////////
 //                      Requires                        //
 //////////////////////////////////////////////////////////
 const bodyParser  = require('body-parser');
 const express     = require('express');
 const moment      = require('moment');
-const port        = ${data.port};
 const path        = require('path');
+const port        = require(path.join(__dirname,"./server/config/settings.js")).port;;
 const app         = express();
 
 ////////////////////////////////////////////////////////////
@@ -18,7 +18,11 @@ app.use(express.static(path.join(__dirname, "./client")));
 ////////////////////////////////////////////////////////////
 //                        Mongoose                        //
 ////////////////////////////////////////////////////////////
-require('./server/config/mongoose.js');
+`;
+if (db) {
+    server_str = server_str +`require('./server/config/mongoose.js');`;
+}
+server_str = server_str + `
 ////////////////////////////////////////////////////////////
 //                         Routes                         //
 ////////////////////////////////////////////////////////////

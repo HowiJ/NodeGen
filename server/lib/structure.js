@@ -2,5 +2,8 @@
 module.exports = {
     "package"   : "package.json",
     "server"    : "server.js",
-    "settings"  : "config/settings.js"
+    "settings"  : "server/config/settings.js",
+    "routes"    : "server/config/routes.js",
+    "mongoose"  : "server/config/mongoose.js",
+    "models"    : "server/models/"
 }

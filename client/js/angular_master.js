@@ -14,27 +14,32 @@ app.factory('GeneratorFactory', function($http) {
 })
 
 app.controller('GeneratorController', ['$scope', 'GeneratorFactory', function($scope, gen) {
+    //Dynamic Form creation. For Arrays, insert init with a [0] or anything inside.
     $scope.details = {
         package: [
-            {field:'name', type:'String'},
-            {field: 'version', type: 'Number'},
-            {field:'description', type:'String'},
-            // {field:'scripts', type:'Array'},
-            {field:'author', type:'String'},
-            {field:'license', type:'String'},
-            // {field:'dependencies', type:'Array', init: [0]}
+            { field:'name',         type: 'String'      },
+            { field:'version',      type: 'Number'      },
+            { field:'description',  type: 'String'      },
+            { field:'author',       type: 'String'      },
+            { field:'license',      type: 'String'      }
         ],
         server: [
-            {field: 'tester', type: 'Array', init: []},
-            {field: 'port', type: 'Number'}
+            { field: 'tester',      type: 'Array',      init: []    },
+            { field: 'port',        type: 'Number'      }
         ],
         database: [
-            {field: 'name', type: 'String'}
+            { field: 'use',         type: 'Checkbox'    },
+            { field: 'name',        type: 'String'      },
+            { field: 'testin',      type: 'Array',      init: [0]   },
+            { field: 'hello ',      type: 'Array',      init: [0]   }
+        ],
+        model: [
+            { field: 'name',        type: 'Model',      init: [[0]]   }
         ]
     }
     $scope.data = {package: {}};
     $scope.download = '';
-
+    $scope.testing = () => { console.log($scope.models) }
     $scope.makeFiles = function() {
         // console.log($scope.data);
         gen.makeFiles($scope.data, function(data) {
@@ -49,18 +54,26 @@ app.controller('GeneratorController', ['$scope', 'GeneratorFactory', function($s
             $scope.data = {package: {}};
         })
     }
+
+    //Adds fields to the array typed inputs
     $scope.addField = function(str) {
-        console.log(str);
         const current = str.split('_');
-        console.log(current[0]);
-        console.log($scope.details[current[0]]);
-        var tmp;
         for (let i = 0; i < $scope.details[current[0]].length; i++) {
             if ($scope.details[current[0]][i].init) {
-                tmp = $scope.details[current[0]][i];
+                $scope.details[current[0]][i].init.push(0);
                 break;
             }
         }
-        tmp.init.push(0);
+    }
+    $scope.addModel = function() {
+        $scope.details.model[0].init.push([0]);
+    }
+    $scope.addAttr = function (model) {
+        console.log(model);
+        const model_num = model.split('@')[1];
+        console.log($scope.details);
+        console.log($scope.details.model);
+        console.log($scope.details.model.init);
+        $scope.details.model[0].init[model_num].push(0);
     }
 }])

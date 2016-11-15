@@ -18,11 +18,45 @@
                 <div ng-repeat="(key, value) in details">
                     <h4 ng-bind="key"></h4>
                     <div ng-repeat="obj in value track by $index">
-                        <label for="{{obj.field}}" ng-bind="obj.field"></label>
-                        <span ng-if="obj.type=='Array'" ng-click="addField(key+'_'+obj.field)">+</span>
+                        <span ng-click="addModel()" ng-if="obj.type=='Model'">Add Another Model +</span>
+
+                        <!-- IF type is Array -->
+                        <span ng-if="obj.type=='Array'"
+                                ng-click="addField(key+'_'+obj.field)">+</span>
                         <br ng-if="obj.type=='Array'">
-                        <input ng-if="obj.type=='Array'" type="text" name="{{key+'_'+obj.field+'#'+$index}}" ng-repeat="inp in obj.init track by $index" value="{{'dep_'+$index}}">
-                        <input ng-if="obj.type!='Array'" type="text" name="{{key+'_'+obj.field}}" value="{{obj.field+'_'+$index}}">
+                        <input ng-if="obj.type=='Array'" type="text"
+                                name="{{key+'_'+obj.field+'#'+$index}}"
+                                ng-repeat="inp in obj.init track by $index"
+                                value="{{'dep_'+$index}}">
+
+                        <!-- IF type is either Number or String -->
+                        <input ng-if="obj.type=='Number'||obj.type=='String'"
+                                type="text" name="{{key+'_'+obj.field}}"
+                                value="{{obj.field+'_'+$index}}">
+
+                        <!-- IF type is Checkbox -->
+                        <label for="{{key+'_'+obj.field}}" ng-if="obj.type=='Checkbox'">Using Database?</label>
+                        <input ng-if="obj.type=='Checkbox'" type="checkbox"
+                                name="{{key+'_'+obj.field}}" checked>
+
+                        <!-- IF type is Model -->
+                        <div ng-if="obj.type=='Model'" ng-repeat="things in obj.init track by $index">
+                            <hr>
+                            <label for="{{obj.field}}" ng-bind="obj.field"></label>
+                            <input type="text" name="{{key+'_'+obj.field+'@'+$index}}" value="{{obj.field}}">
+                            <br>
+                            <span ng-click="addAttr(key+'_'+obj.field+'@'+$index)">Add Attribute Field +</span>
+                            <br><br>
+                            <!-- Attributes.... -->
+                            <div ng-repeat="o in obj.init[$parent.$index] track by $index">
+                                <label for="">Attr Name</label>
+                                <input type="text"
+                                    ng-model="obj.init[$parent.$index][$index]" ng-keypress="testing()">
+                                <label for="">Data Type</label>
+                                <input type="text"
+                                    name="{{'model_'+$parent.$index+'#'+obj.init[$parent.$index][$index]}}">
+                            </div>
+                        </div>
                     </div>
                 </div>
 

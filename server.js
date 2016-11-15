@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, './client')));
+app.use(express.static(path.join(__dirname, './bower_components')));
 
 require('./server/config/routes.js')(app);
 

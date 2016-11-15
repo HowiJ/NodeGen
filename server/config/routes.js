@@ -6,10 +6,6 @@ module.exports = function(app) {
     app.post('/node_server', function(req, res) {
         creator.server(req, res);
     })
-    app.get('/test', function(req, res) {
-        creator.test(req, res);
-    })
-
 
     //All other routes go to the view page so angular can handle the routing.
     app.get('/*', function(req, res) {

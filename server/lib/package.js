@@ -1,5 +1,5 @@
 //Module that is in charge of creating the package.json;
-module.exports = function(data) {
+module.exports = function(data, db) {
     //Creating a string for the contents of package.json
     var package_json = "{";
 
@@ -16,8 +16,10 @@ module.exports = function(data) {
     package_json = package_json + `\n\t"dependencies" : {`;
     package_json = package_json + `\n\t\t"express" : "^4.14.0",`;
     package_json = package_json + `\n\t\t"body-parser" : "^1.15.2",`;
-    package_json = package_json + `\n\t\t"moment" : "^2.15.2",`;
-    package_json = package_json + `\n\t\t"mongoose" : "^4.6.6"`;
+    package_json = package_json + `\n\t\t"moment" : "^2.15.2"`;
+    if (db) {
+        package_json = package_json + `,\n\t\t"mongoose" : "^4.6.6"`;
+    }
 
     //For custom Dependencies
     // if (pkg_dep.length > 0) { package_json += "," };
